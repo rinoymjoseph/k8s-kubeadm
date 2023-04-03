@@ -1,0 +1,38 @@
+- name: Create /etc/modules-load.d/k8s.conf
+  become: true
+  file:
+    path: "/etc/modules-load.d/k8s.conf"
+    state: "touch"
+
+- name: Add entries to /etc/modules-load.d/k8s.conf
+  become: true
+  blockinfile:
+    path: "/etc/modules-load.d/k8s.conf"
+    block: |
+      overlay
+      br_netfilter
+
+- name: modprobe
+  become: true
+  shell: |
+    modprobe overlay
+    modprobe br_netfilter
+
+- name: Create /etc/sysctl.d/k8s.conf
+  become: true
+  file:
+    path: "/etc/sysctl.d/k8s.conf"
+    state: "touch"
+
+- name: Add entries to /etc/sysctl.d/k8s.conf
+  become: true
+  blockinfile:
+    path: "/etc/sysctl.d/k8s.conf"
+    block: |
+      net.bridge.bridge-nf-call-iptables = 1
+      net.bridge.bridge-nf-call-ip6tables = 1
+      net.ipv4.ip_forward = 1
+      
+- name: Apply new settings
+  become: true
+  shell: sysctl --system
