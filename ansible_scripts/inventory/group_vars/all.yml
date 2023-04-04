@@ -1,8 +1,6 @@
+k8s_version: 1.26.3-00
 crio_version: 1.26
 crio_os: xUbuntu_22.04
-
-# bootstrap directories
-downloads_dir: "{{ ansible_env.HOME + '/downloads' }}"
 
 # k8s apps directories
 k8s_apps_dir: "{{ ansible_env.HOME + '/k8s_apps' }}"
@@ -10,8 +8,3 @@ calico_dir: "{{ k8s_apps_dir }}/calico"
 prometheus_dir: "{{ k8s_apps_dir }}/prometheus"
 
 nodes_host_ip_list: []
-controllers_host_ip_list: []
-workers_host_ip_list: []
-load_balancer_ip_address: "{{ hostvars.load_balancer.ansible_host }}"
-controller_ip_list: []
-worker_ip_list: []

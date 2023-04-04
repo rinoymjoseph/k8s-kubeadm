@@ -58,9 +58,9 @@
         - cri-o
         - cri-o-runc
         - cri-tools
-        - kubelet 
-        - kubeadm
-        - kubectl
+        - kubelet={{ k8s_version }}
+        - kubeadm={{ k8s_version }}
+        - kubectl={{ k8s_version }}
     state: present
   register: apt_install_kube_packages
 
