@@ -1,4 +1,4 @@
-- name: Update and upgrade apt packages
+- name: Update apt packages
   become: true
   apt:
     update_cache: yes
@@ -41,7 +41,7 @@
   become: true
   shell: echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
 
-- name: Update and upgrade apt packages
+- name: Update apt packages
   become: true
   apt:
     update_cache: yes
@@ -55,12 +55,12 @@
   become: true
   package:
     name:
-        - cri-o
-        - cri-o-runc
-        - cri-tools
-        - kubelet={{ k8s_version }}
-        - kubeadm={{ k8s_version }}
-        - kubectl={{ k8s_version }}
+      - cri-o
+      - cri-o-runc
+      - cri-tools
+      - kubelet={{ k8s_version }}
+      - kubeadm={{ k8s_version }}
+      - kubectl={{ k8s_version }}
     state: present
   register: apt_install_kube_packages
 

@@ -1,0 +1,60 @@
+- name: Create manifests directory
+  file:
+    path: "{{ prometheus_dir }}"
+    state: directory
+  
+- name: Copy manifests
+  template:
+    src: "{{ item }}"
+    dest: "{{ prometheus_dir }}/{{ item }}"
+  with_items: 
+    - bundle.yaml
+    - prom_rbac.yaml
+    - prometheus.yaml
+    - service.yaml
+
+# - name: Deploy prometheus operator
+#   kubernetes.core.k8s:
+#     state: present
+#     src: "{{ prometheus_dir }}/bundle.yaml"
+
+- name: Deploy prometheus operator
+  shell: kubectl create -f {{ prometheus_dir }}/bundle.yaml
+  register: join_worker
+
+- name: Wait till the pods are in running phase
+  kubernetes.core.k8s_info:
+    kind: Pod
+    namespace: default
+    label_selectors:
+      - app.kubernetes.io/name=prometheus-operator 
+  register: prometheus_operator_pod_info
+  until: prometheus_operator_pod_info | json_query('resources[*].status.phase') | unique == ["Running"]
+  delay: 10
+  retries: 12
+
+- name: Create RBAC
+  kubernetes.core.k8s:
+    state: present
+    src: "{{ prometheus_dir }}/prom_rbac.yaml"
+
+- name: Deploy prometheus instance
+  kubernetes.core.k8s:
+    state: present
+    src: "{{ prometheus_dir }}/prometheus.yaml"
+
+- name: Wait till the pods are in running phase
+  kubernetes.core.k8s_info:
+    kind: Pod
+    namespace: default
+    label_selectors:
+      - app.kubernetes.io/name=prometheus 
+  register: prometheus_pod_info
+  until: prometheus_pod_info | json_query('resources[*].status.phase') | unique == ["Running"]
+  delay: 10
+  retries: 12
+
+- name: Create service
+  kubernetes.core.k8s:
+    state: present
+    src: "{{ prometheus_dir }}/service.yaml"

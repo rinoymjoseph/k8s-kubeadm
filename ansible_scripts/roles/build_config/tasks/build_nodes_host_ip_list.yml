@@ -5,4 +5,3 @@
 - name: Update nodes_host_ip_list
   set_fact:
     nodes_host_ip_list: "{{ nodes_host_ip_list | default({}) | combine ({ item : ip_address }) }}"
-    #nodes_host_ip_list: "{{ nodes_host_ip_list | default({},{}) | combine ({ 'host' : item }, { 'ip_address' : ip_address }) }}"

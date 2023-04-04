@@ -5,6 +5,8 @@ crio_os: xUbuntu_22.04
 # k8s apps directories
 k8s_apps_dir: "{{ ansible_env.HOME + '/k8s_apps' }}"
 calico_dir: "{{ k8s_apps_dir }}/calico"
+metrics_server_dir: "{{ k8s_apps_dir }}/metrics_server"
 prometheus_dir: "{{ k8s_apps_dir }}/prometheus"
 
 nodes_host_ip_list: []
+kubernetes_join_command: ""

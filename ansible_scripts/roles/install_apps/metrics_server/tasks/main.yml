@@ -1,0 +1,25 @@
+- name: Create manifests directory
+  file:
+    path: "{{ metrics_server_dir }}"
+    state: directory
+  
+- name: Copy manifests
+  template:
+    src: "components.yaml"
+    dest: "{{ metrics_server_dir }}/components.yaml"
+
+- name: Install metrics server
+  kubernetes.core.k8s:
+    state: present
+    src: "{{ metrics_server_dir }}/components.yaml"
+
+- name: Wait till the pods are in running phase
+  kubernetes.core.k8s_info:
+    kind: Pod
+    namespace: kube-system
+    label_selectors:
+      - k8s-app=metrics-server
+  register: metrics_server_pod_info
+  until: metrics_server_pod_info | json_query('resources[*].status.phase') | unique == ["Running"]
+  delay: 10
+  retries: 12

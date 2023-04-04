@@ -1,0 +1,23 @@
+- name: Get the token for joining the worker nodes
+  become: true
+  shell: kubeadm token create --print-join-command
+  register: kubeadm_token_create
+  delegate_to: k8s-controller-1
+
+- name: Set fact - kubernetes_join_command
+  set_fact:
+    kubernetes_join_command: "{{ kubeadm_token_create.stdout }}"
+
+- name: Debug | kubernetes_join_command
+  debug:
+    msg: "{{ kubernetes_join_command }}"
+
+- name: Join worker node to the cluster.
+  become: true
+  shell: "{{ kubernetes_join_command }}"
+  register: join_worker
+  ignore_errors: true
+
+- name: Debug | join_worker
+  debug:
+    msg: "{{ join_worker }}"

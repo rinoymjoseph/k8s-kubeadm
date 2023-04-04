@@ -1,0 +1,32 @@
+- name: Get Cluster information
+  kubernetes.core.k8s_cluster_info:
+  register: api_status
+  ignore_errors: True
+  delegate_to: localhost
+
+- name: Debug | api_status
+  debug:
+    msg: "{{ api_status }}"
+
+- name: Initialize the cluster
+  become: true
+  shell: kubeadm init --pod-network-cidr=10.200.0.0/16
+  args:
+    chdir: $HOME
+    creates: cluster_initialized.txt
+  when: not api_status.apis is defined
+  ignore_errors: True
+
+- name: create .kube directory
+  file:
+    path: "{{ ansible_env.HOME + '/.kube'}}"
+    state: directory
+    mode: 0755
+
+- name: Copies admin.conf to user's kube config
+  become: true
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: "{{ ansible_env.HOME + '/.kube/config'}}"
+    remote_src: yes
+    mode: 0755

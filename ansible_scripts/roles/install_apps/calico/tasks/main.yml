@@ -11,15 +11,10 @@
     - tigera-operator.yaml
     - custom-resources.yaml
 
-# - name: Install the Tigera Calico operator 
-#   shell: kubectl create -f tigera-operator.yaml
-#   args:
-#     chdir: "{{ calico_dir }}"
-
 - name: Install the Tigera Calico operator
   kubernetes.core.k8s:
     state: present
-    src: "{{ calico_dir + 'tigera-operator.yaml'}}"
+    src: "{{ calico_dir + '/tigera-operator.yaml'}}"
 
 - name: Wait till the pods are in running phase
   kubernetes.core.k8s_info:
@@ -33,7 +28,7 @@
 - name: Install calico
   kubernetes.core.k8s:
     state: present
-    src: "{{ calico_dir + 'custom-resources.yaml}}"
+    src: "{{ calico_dir + '/custom-resources.yaml'}}"
 
 - name: Wait till the pods are in running phase
   kubernetes.core.k8s_info:

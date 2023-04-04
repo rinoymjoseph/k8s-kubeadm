@@ -7,14 +7,25 @@
     - role: common/update_etc_hosts
 
 - hosts: cluster
-  gather_facts: true
   roles:
     - role: common/disable_swap
     - role: common/install_kube_packages
     - role: common/configure_network
-    
+
 - hosts: controllers
-  gather_facts: true
   roles:
-    - role: control_plane/init
-    - role: control_plane/install_calico
+    - role: add_control_plane
+    - role: bootstrap/copy_kubeconfig
+
+- hosts: bootstrap
+  roles:
+    - role: bootstrap/install_packages
+    - role: install_apps/calico
+
+- hosts: workers
+  roles:
+    - role: add_workers
+
+- hosts: bootstrap
+  roles:
+    - role: install_apps/metrics_server

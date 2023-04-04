@@ -1,0 +1,31 @@
+- name: Kube install - Download the Google Cloud public signing key
+  become: true
+  shell: curl -fsSLo /etc/apt/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+
+- name: Kube install - Add the Kubernetes apt repository
+  become: true
+  shell: echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
+- name: Update apt packages
+  become: true
+  apt:
+    update_cache: yes
+  register: apt_update_kube_packages
+
+- name: Debug - apt_update_kube_packages
+  debug:
+    msg: "{{ apt_update_kube_packages }}"
+
+- name: Remove apt lock file
+  become: true
+  file:
+    state: absent
+    path: "/var/lib/dpkg/lock-frontend"
+      
+- name: Install package dependencies
+  become: true
+  package:
+    name:
+      - kubectl={{ k8s_version }}
+    state: present
+  register: apt_install_kube_packages

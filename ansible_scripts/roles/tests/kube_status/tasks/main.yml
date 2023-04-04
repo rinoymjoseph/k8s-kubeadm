@@ -1,0 +1,10 @@
+- name: Get Cluster information
+  kubernetes.core.k8s_cluster_info:
+  register: api_status
+  ignore_errors: True
+  delegate_to: localhost
+
+- name: Debug | api_status
+  debug:
+    msg: "{{ api_status }}"
+  when: api_status.apis is defined and (api_status.apis | length) > 0
