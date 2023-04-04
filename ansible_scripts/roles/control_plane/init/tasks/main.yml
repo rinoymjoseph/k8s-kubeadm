@@ -1,0 +1,29 @@
+# - name: Initialize the cluster
+#   become: true
+#   shell: kubeadm init --pod-network-cidr=10.200.0.0/16
+#   args:
+#     chdir: $HOME
+#     creates: cluster_initialized.txt
+
+- name: create .kube directory
+  file:
+    path: "{{ ansible_env.HOME + '/.kube'}}"
+    state: directory
+    mode: 0755
+
+- name: Copies admin.conf to user's kube config
+  become: true
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: "{{ ansible_env.HOME + '/.kube/config'}}"
+    remote_src: yes
+    mode: 0755
+
+- name: Get the token for joining the worker nodes
+  become: yes
+  shell: kubeadm token create --print-join-command
+  register: kubernetes_join_command
+
+- name: Debug | kubernetes_join_command
+  debug:
+    msg: "{{ kubernetes_join_command }}"

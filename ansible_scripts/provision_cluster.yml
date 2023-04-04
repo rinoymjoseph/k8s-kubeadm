@@ -12,3 +12,9 @@
     - role: common/disable_swap
     - role: common/install_kube_packages
     - role: common/configure_network
+    
+- hosts: controllers
+  gather_facts: true
+  roles:
+    - role: control_plane/init
+    - role: control_plane/install_calico

@@ -1,25 +1,12 @@
-cni_plugins_version: v1.0.1
 crio_version: 1.26
 crio_os: xUbuntu_22.04
-
-packages:
-- name: cni-plugins
-  url: https://github.com/containernetworking/plugins/releases/download/{{ cni_plugins_version }}/cni-plugins-linux-amd64-{{ cni_plugins_version }}.tgz
-
-k8s_apps:
-- name: core_dns_yaml
-  url: "https://raw.githubusercontent.com/coredns/deployment/coredns-1.14.0/kubernetes/coredns.yaml.sed"
-- name: core_dns_deploy_script
-  url: "https://raw.githubusercontent.com/coredns/deployment/coredns-1.14.0/kubernetes/deploy.sh"
 
 # bootstrap directories
 downloads_dir: "{{ ansible_env.HOME + '/downloads' }}"
 
 # k8s apps directories
 k8s_apps_dir: "{{ ansible_env.HOME + '/k8s_apps' }}"
-core_dns_dir: "{{ k8s_apps_dir }}/core_dns"
 calico_dir: "{{ k8s_apps_dir }}/calico"
-flannel_dir: "{{ k8s_apps_dir }}/flannel"
 prometheus_dir: "{{ k8s_apps_dir }}/prometheus"
 
 nodes_host_ip_list: []
