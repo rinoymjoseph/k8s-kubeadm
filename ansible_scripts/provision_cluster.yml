@@ -1,16 +1,16 @@
 ---
-- hosts: nodes
+- hosts: common
   gather_facts: true
   roles:
     - role: build_config
     - role: common/set_host_name
     - role: common/update_etc_hosts
 
-- hosts: cluster
+- hosts: nodes
   roles:
-    - role: common/disable_swap
-    - role: common/install_kube_packages
-    - role: common/configure_network
+    - role: nodes/disable_swap
+    - role: nodes/install_kube_packages
+    - role: nodes/configure_network
 
 - hosts: controllers
   roles:
