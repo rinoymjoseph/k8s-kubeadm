@@ -20,7 +20,8 @@
 
 - name: Deploy prometheus operator
   shell: kubectl create -f {{ prometheus_dir }}/bundle.yaml
-  register: join_worker
+  register: prometheus_operator
+  ignore_errors: true
 
 - name: Wait till the pods are in running phase
   kubernetes.core.k8s_info:
@@ -34,12 +35,13 @@
   retries: 12
 
 - name: Create RBAC
-  kubernetes.core.k8s:
-    state: present
-    src: "{{ prometheus_dir }}/prom_rbac.yaml"
+  shell: kubectl create -f {{ prometheus_dir }}/prom_rbac.yaml
+  register: prometheus_rbac
+  ignore_errors: true
 
 - name: Deploy prometheus instance
   kubernetes.core.k8s:
+    namespace: default
     state: present
     src: "{{ prometheus_dir }}/prometheus.yaml"
 
@@ -56,5 +58,6 @@
 
 - name: Create service
   kubernetes.core.k8s:
+    namespace: default
     state: present
     src: "{{ prometheus_dir }}/service.yaml"

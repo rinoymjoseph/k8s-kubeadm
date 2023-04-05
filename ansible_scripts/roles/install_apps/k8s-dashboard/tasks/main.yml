@@ -1,0 +1,23 @@
+- name: Create manifests directory
+  file:
+    path: "{{ k8s_dashboard }}"
+    state: directory
+  
+- name: Copy manifests
+  template:
+    src: "dashboard_insecure.yaml"
+    dest: "{{ k8s_dashboard }}/dashboard_insecure.yaml"
+
+- name: Install kubernetes dashboard
+  kubernetes.core.k8s:
+    state: present
+    src: "{{ k8s_dashboard }}/dashboard_insecure.yaml"
+
+- name: Wait till the pods are in running phase
+  kubernetes.core.k8s_info:
+    kind: Pod
+    namespace: kubernetes-dashboard
+  register: kubernetes_dashboard_pod_info
+  until: kubernetes_dashboard_pod_info | json_query('resources[*].status.phase') | unique == ["Running"]
+  delay: 10
+  retries: 12
