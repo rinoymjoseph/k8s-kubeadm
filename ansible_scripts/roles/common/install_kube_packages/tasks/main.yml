@@ -8,6 +8,18 @@
   debug:
     msg: "{{ apt_update }}"
 
+- name: Remove /var/lib/dpkg/lock-frontend file
+  become: true
+  file:
+    state: absent
+    path: "/var/lib/dpkg/lock-frontend"
+
+- name: Remove /var/lib/dpkg/lock file
+  become: true
+  file:
+    state: absent
+    path: "/var/lib/dpkg/lock"
+
 - name: Install package dependencies
   become: true
   package:
@@ -50,6 +62,18 @@
 - name: Debug - apt_update_kube_packages
   debug:
     msg: "{{ apt_update_kube_packages }}"
+
+- name: Remove /var/lib/dpkg/lock-frontend file
+  become: true
+  file:
+    state: absent
+    path: "/var/lib/dpkg/lock-frontend"
+
+- name: Remove /var/lib/dpkg/lock file
+  become: true
+  file:
+    state: absent
+    path: "/var/lib/dpkg/lock"
       
 - name: Install package dependencies
   become: true

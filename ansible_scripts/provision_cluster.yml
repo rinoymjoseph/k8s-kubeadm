@@ -29,3 +29,4 @@
 - hosts: bootstrap
   roles:
     - role: install_apps/metrics_server
+    - role: install_apps/k8s-dashboard
