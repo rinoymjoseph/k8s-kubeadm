@@ -2,6 +2,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: Prometheus
 metadata:
   name: prometheus
+  namespace: prometheus
   labels:
     app: prometheus
 spec:
@@ -18,4 +19,6 @@ spec:
     runAsUser: 1000
   serviceAccountName: prometheus
   version: v2.22.1
-  serviceMonitorSelector: {}
+  serviceMonitorSelector:
+    matchLabels:
+      serviceMonitorSelector: prometheus
