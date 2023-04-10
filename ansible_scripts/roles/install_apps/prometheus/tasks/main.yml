@@ -1,63 +1,31 @@
-- name: Create manifests directory
-  file:
-    path: "{{ prometheus_dir }}"
-    state: directory
-  
-- name: Copy manifests
-  template:
-    src: "{{ item }}"
-    dest: "{{ prometheus_dir }}/{{ item }}"
-  with_items: 
-    - bundle.yaml
-    - prom_rbac.yaml
-    - prometheus.yaml
-    - service.yaml
+- name: Add prometheus-community chart repo
+  kubernetes.core.helm_repository:
+    name: prometheus-community
+    repo_url: "https://prometheus-community.github.io/helm-charts"
 
-# - name: Deploy prometheus operator
+- name: Deploy prometheus
+  kubernetes.core.helm:
+    name: prometheus
+    release_namespace: monitoring
+    create_namespace: true
+    chart_ref: prometheus-community/kube-prometheus-stack
+    values: "{{ lookup('file', 'values.yaml') | from_yaml }}"
+
+- name: Wait till the pods are in running phase
+  kubernetes.core.k8s_info:
+    kind: Pod
+    namespace: monitoring
+  register: monitoring_pod_info
+  until: monitoring_pod_info | json_query('resources[*].status.phase') | unique == ["Running"]
+  delay: 20
+  retries: 12
+
+# - name: Create prometheus instance
 #   kubernetes.core.k8s:
 #     state: present
-#     src: "{{ prometheus_dir }}/bundle.yaml"
-
-- name: Deploy prometheus operator
-  shell: kubectl create -f {{ prometheus_dir }}/bundle.yaml
-  register: prometheus_operator
-  ignore_errors: true
-
-- name: Wait till the pods are in running phase
-  kubernetes.core.k8s_info:
-    kind: Pod
-    namespace: default
-    label_selectors:
-      - app.kubernetes.io/name=prometheus-operator 
-  register: prometheus_operator_pod_info
-  until: prometheus_operator_pod_info | json_query('resources[*].status.phase') | unique == ["Running"]
-  delay: 10
-  retries: 12
-
-- name: Create RBAC
-  shell: kubectl create -f {{ prometheus_dir }}/prom_rbac.yaml
-  register: prometheus_rbac
-  ignore_errors: true
-
-- name: Deploy prometheus instance
-  kubernetes.core.k8s:
-    namespace: default
-    state: present
-    src: "{{ prometheus_dir }}/prometheus.yaml"
-
-- name: Wait till the pods are in running phase
-  kubernetes.core.k8s_info:
-    kind: Pod
-    namespace: default
-    label_selectors:
-      - app.kubernetes.io/name=prometheus 
-  register: prometheus_pod_info
-  until: prometheus_pod_info | json_query('resources[*].status.phase') | unique == ["Running"]
-  delay: 10
-  retries: 12
-
-- name: Create service
-  kubernetes.core.k8s:
-    namespace: default
-    state: present
-    src: "{{ prometheus_dir }}/service.yaml"
+#     src: "{{ item }}"
+#     namespace: monitoring
+#   with_items:
+#     - "{{ role_path }}/files/rbac.yaml"
+#     - "{{ role_path }}/files/prometheus.yaml" 
+#     - "{{ role_path }}/files/service.yaml"

@@ -1,5 +1,5 @@
 ---
-- hosts: common
+- hosts: all
   gather_facts: true
   roles:
     - role: build_config

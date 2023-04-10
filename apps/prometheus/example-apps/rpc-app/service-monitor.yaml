@@ -1,0 +1,14 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app: rpc-app
+    release: prometheus
+  name: rpc-app
+  namespace: default
+spec:
+  endpoints:
+  - port: web
+  selector:
+    matchLabels:
+      app: rpc-app

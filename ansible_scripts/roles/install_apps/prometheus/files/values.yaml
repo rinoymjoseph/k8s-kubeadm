@@ -1,0 +1,43 @@
+alertmanager:
+  enabled: false
+coreDns:
+  enabled: true
+kubeApiServer:
+  enabled: true
+kubeControllerManager:
+  enabled: true
+kubeDns:
+  enabled: true
+kubeEtcd:
+  enabled: true
+kubeProxy:
+  enabled: true
+kubeScheduler:
+  enabled: true
+kubeStateMetrics:
+  enabled: true
+kubelet:
+  enabled: true
+nodeExporter:
+  enabled: true
+grafana:
+  enabled: true
+prometheus:
+  enabled: true
+defaultRules:
+  create: false
+# Default configuration of prometheus operator will create CRDs in the cluster idempotently
+prometheusOperator:
+  enabled: true
+  serviceMonitor:
+    selfMonitor: false
+  tls:
+    enabled: false
+  admissionWebhooks:
+    enabled: false
+  namespaces:
+    releaseNamespace: true
+    additional:
+      - kube-system
+      - default
+      - edgenius

@@ -11,4 +11,4 @@ pip3 install kubernetes
 kubectl patch svc prometheus-kube-prometheus-prometheus -p '{"spec": {"type": "NodePort"}}'
 
 kubectl patch svc prometheus-kube-prometheus-prometheus --type='json' -p \
-'[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":30000}]'
+'[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":30000}]' -n monitoring

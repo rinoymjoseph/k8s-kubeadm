@@ -36,5 +36,5 @@
     namespace: calico-system
   register: calico_system_pod_info
   until: calico_system_pod_info | json_query('resources[*].status.phase') | unique == ["Running"]
-  delay: 10
+  delay: 20
   retries: 12
