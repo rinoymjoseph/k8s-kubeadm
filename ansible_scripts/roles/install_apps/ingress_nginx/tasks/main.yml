@@ -1,0 +1,20 @@
+- name: Add chart repo
+  kubernetes.core.helm_repository:
+    name: ingress-nginx
+    repo_url: "https://kubernetes.github.io/ingress-nginx"
+
+- name: Deploy ingress-nginx
+  kubernetes.core.helm:
+    name: ingress-nginx
+    release_namespace: ingress-nginx
+    create_namespace: true
+    chart_ref: ingress-nginx/ingress-nginx
+
+- name: Wait till the pods are in running phase
+  kubernetes.core.k8s_info:
+    kind: Pod
+    namespace: ingress-nginx
+  register: ingress_nginx_pod_info
+  until: ingress_nginx_pod_info | json_query('resources[*].status.phase') | unique == ["Running"]
+  delay: 20
+  retries: 12

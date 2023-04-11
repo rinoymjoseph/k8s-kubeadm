@@ -1,0 +1,29 @@
+- name: Add chart repo
+  kubernetes.core.helm_repository:
+    name: metallb
+    repo_url: "https://metallb.github.io/metallb"
+
+- name: Deploy metallb
+  kubernetes.core.helm:
+    name: metallb
+    release_namespace: metallb-system
+    create_namespace: true
+    chart_ref: metallb/metallb
+
+- name: Wait till the pods are in running phase
+  kubernetes.core.k8s_info:
+    kind: Pod
+    namespace: metallb-system
+  register: metallb_system_pod_info
+  until: metallb_system_pod_info | json_query('resources[*].status.phase') | unique == ["Running"]
+  delay: 20
+  retries: 12
+
+- name: Configure metallb
+  kubernetes.core.k8s:
+    state: present
+    src: "{{ item }}"
+    namespace: metallb-system
+  with_items:
+    - "{{ role_path }}/files/ip_address_pool.yaml"
+    - "{{ role_path }}/files/l2_advertisement.yaml"

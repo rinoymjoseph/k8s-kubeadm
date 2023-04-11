@@ -1,4 +1,8 @@
 ---
 - hosts: bootstrap
   roles:
+    #- role: install_apps/metrics_server
+    - role: install_apps/k8s_dashboard
+    - role: install_apps/metal_lb
     - role: install_apps/prometheus
+    - role: install_apps/ingress-nginx

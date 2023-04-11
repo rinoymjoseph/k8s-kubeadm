@@ -4,12 +4,11 @@ metadata:
   name: prometheus
   namespace: default
 spec:
-  type: NodePort
   ports:
   - name: web
-    nodePort: 30000
     port: 9090
     protocol: TCP
     targetPort: web
   selector:
-    prometheus: prometheus
+    prometheus: default-prometheus
+    app.kubernetes.io/instance: default-prometheus

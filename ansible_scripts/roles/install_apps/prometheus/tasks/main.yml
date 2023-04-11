@@ -19,13 +19,3 @@
   until: monitoring_pod_info | json_query('resources[*].status.phase') | unique == ["Running"]
   delay: 20
   retries: 12
-
-# - name: Create prometheus instance
-#   kubernetes.core.k8s:
-#     state: present
-#     src: "{{ item }}"
-#     namespace: monitoring
-#   with_items:
-#     - "{{ role_path }}/files/rbac.yaml"
-#     - "{{ role_path }}/files/prometheus.yaml" 
-#     - "{{ role_path }}/files/service.yaml"

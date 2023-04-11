@@ -2,7 +2,10 @@
   become: true
   file:
     state: absent
-    path: "/var/lib/dpkg/lock-frontend"
+    path: "{{ item }}"
+  with_items:
+    - /var/lib/dpkg/lock-frontend
+    - /var/lib/dpkg/lock
 
 - name: Install packages
   become: true
@@ -41,7 +44,10 @@
   become: true
   file:
     state: absent
-    path: "/var/lib/dpkg/lock-frontend"
+    path: "{{ item }}"
+  with_items:
+    - /var/lib/dpkg/lock-frontend
+    - /var/lib/dpkg/lock
       
 - name: Install package dependencies
   become: true

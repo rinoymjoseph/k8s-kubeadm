@@ -2,19 +2,16 @@
   file:
     path: "{{ calico_dir }}"
     state: directory
-  
-- name: Copy manifests
-  template:
-    src: "{{ item }}"
-    dest: "{{ calico_dir }}/{{ item }}"
-  with_items:
-    - tigera-operator.yaml
-    - custom-resources.yaml
+
+- name: Download tigera operator
+  get_url:
+    url: "https://raw.githubusercontent.com/projectcalico/calico/v3.25.1/manifests/tigera-operator.yaml"
+    dest: "{{ calico_dir }}"
 
 - name: Install the Tigera Calico operator
   kubernetes.core.k8s:
     state: present
-    src: "{{ calico_dir + '/tigera-operator.yaml'}}"
+    src: "{{ calico_dir }}/tigera-operator.yaml"
 
 - name: Wait till the pods are in running phase
   kubernetes.core.k8s_info:
@@ -25,10 +22,17 @@
   delay: 10
   retries: 12
 
+- name: Copy manifest
+  template:
+    src: "{{ item }}"
+    dest: "{{ calico_dir }}/{{ item }}"
+  with_items:
+    - custom-resources.yaml
+
 - name: Install calico
   kubernetes.core.k8s:
     state: present
-    src: "{{ calico_dir + '/custom-resources.yaml'}}"
+    src: "{{ calico_dir }}/custom-resources.yaml"
 
 - name: Wait till the pods are in running phase
   kubernetes.core.k8s_info:
