@@ -17,16 +17,18 @@ kubectl patch svc prometheus --type='json' -p \
 '[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":30001}]'
 
 kubectl patch svc my-otel-demo-frontendproxy --type='json' -p \
-'[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":30001}]'
+'[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":30000}]'
 
 kubectl patch svc my-otel-demo-frontend --type='json' -p \
-'[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":30002}]'
+'[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":30001}]'
 
 kubectl patch svc my-otel-demo-grafana --type='json' -p \
-'[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":30003}]'
+'[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":30002}]'
 
 kubectl patch svc my-otel-demo-loadgenerator --type='json' -p \
-'[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":30004}]'
+'[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":30003}]'
 
 kubectl patch svc my-otel-demo-jaeger-query --type='json' -p \
-'[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":30005}]'
+'[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":30004}]'
+
+USER=ability; PASSWORD=welcome123#; echo "${USER}:$(openssl passwd -stdin -apr1 <<< ${PASSWORD})" >> auth

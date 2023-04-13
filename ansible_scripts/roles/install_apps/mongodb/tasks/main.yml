@@ -1,0 +1,29 @@
+- name: Add chart repo
+  kubernetes.core.helm_repository:
+    name: bitnami
+    repo_url: "https://charts.bitnami.com/bitnami"
+
+- name: Deploy mongodb
+  kubernetes.core.helm:
+    name: mongodb
+    release_namespace: mongodb
+    create_namespace: true
+    chart_ref: bitnami/mongodb
+    values:
+      auth:
+        rootPassword: "welcome123#"
+      persistence:
+        storageClass: "longhorn"
+        size: "2Gi"
+      service:
+        type: LoadBalancer
+        loadBalancerIP: "192.168.0.181"
+
+- name: Wait till the pods are in running phase
+  kubernetes.core.k8s_info:
+    kind: Pod
+    namespace: mongodb
+  register: mongodb_pod_info
+  until: mongodb_pod_info | json_query('resources[*].status.phase') | unique == ["Running"]
+  delay: 20
+  retries: 12
