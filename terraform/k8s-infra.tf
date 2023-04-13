@@ -55,7 +55,7 @@ resource "proxmox_vm_qemu" "k8s-worker-1" {
   target_node   = "proxmox"
   clone         = "Ubuntu-Server-22.04"
   full_clone    = false
-  memory        = 4096
+  memory        = 6144
   cores         = 2
   network   {
     model       = "virtio"
@@ -72,7 +72,7 @@ resource "proxmox_vm_qemu" "k8s-worker-2" {
   target_node   = "proxmox"
   clone         = "Ubuntu-Server-22.04"
   full_clone    = false
-  memory        = 4096
+  memory        = 6144
   cores         = 2
   network   {
     model       = "virtio"
@@ -89,7 +89,7 @@ resource "proxmox_vm_qemu" "k8s-worker-3" {
   target_node   = "proxmox"
   clone         = "Ubuntu-Server-22.04"
   full_clone    = false
-  memory        = 4096
+  memory        = 6144
   cores         = 2
   network   {
     model       = "virtio"
