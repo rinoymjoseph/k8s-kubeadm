@@ -28,10 +28,11 @@
 
 - hosts: bootstrap
   roles:
+    - role: install_apps/wait_for_workers
+    - role: install_apps/metal_lb
+    - role: install_apps/cert_manager
     - role: install_apps/metrics_server
     - role: install_apps/k8s_dashboard
-    - role: install_apps/metal_lb
     - role: install_apps/ingress_nginx
     - role: install_apps/longhorn
     - role: install_apps/prometheus
-    

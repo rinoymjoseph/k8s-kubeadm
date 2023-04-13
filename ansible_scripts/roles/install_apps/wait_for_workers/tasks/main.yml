@@ -1,0 +1,8 @@
+- name: Wait till the pods are in running phase
+  kubernetes.core.k8s_info:
+    kind: Pod
+    namespace: calico-system
+  register: calico_system_pod_info
+  until: calico_system_pod_info | json_query('resources[*].status.phase') | unique == ["Running"]
+  delay: 20
+  retries: 12
