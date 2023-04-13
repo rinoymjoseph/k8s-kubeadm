@@ -6,7 +6,7 @@
 - name: Deploy mongodb
   kubernetes.core.helm:
     name: mongodb
-    release_namespace: mongodb
+    release_namespace: mongo
     create_namespace: true
     chart_ref: bitnami/mongodb
     values:
@@ -22,8 +22,8 @@
 - name: Wait till the pods are in running phase
   kubernetes.core.k8s_info:
     kind: Pod
-    namespace: mongodb
-  register: mongodb_pod_info
-  until: mongodb_pod_info | json_query('resources[*].status.phase') | unique == ["Running"]
+    namespace: mongo
+  register: mongo_pod_info
+  until: mongo_pod_info | json_query('resources[*].status.phase') | unique == ["Running"]
   delay: 20
   retries: 12

@@ -10,13 +10,13 @@
     create_namespace: true
     chart_ref: jetstack/cert-manager
     values:
-      installCRDs:true
+      installCRDs: true
 
 - name: Wait till the pods are in running phase
   kubernetes.core.k8s_info:
     kind: Pod
     namespace: cert-manager
   register: cert_manager_pod_info
-  until: ingress_nginx_pod_info | json_query('resources[*].status.phase') | unique == ["Running"]
+  until: cert_manager_pod_info | json_query('resources[*].status.phase') | unique == ["Running"]
   delay: 20
   retries: 12

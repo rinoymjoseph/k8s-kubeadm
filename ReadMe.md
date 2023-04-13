@@ -32,3 +32,9 @@ kubectl patch svc my-otel-demo-jaeger-query --type='json' -p \
 '[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":30004}]'
 
 USER=ability; PASSWORD=welcome123#; echo "${USER}:$(openssl passwd -stdin -apr1 <<< ${PASSWORD})" >> auth
+
+kubectl create secret docker-registry griffinsreg --namespace edgenius \
+--docker-server griffins.azurecr.io \
+--docker-username griffins \
+--docker-password I24ZwLkmhpaUR1MLP=gbPZLMSTPpjWzW \
+--docker-email rinoymjoseph@gmail.com
