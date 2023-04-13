@@ -14,13 +14,12 @@
     src: "{{ calico_dir }}/tigera-operator.yaml"
 
 - name: Wait till the pods are in running phase
-  kubernetes.core.k8s_info:
-    kind: Pod
+  include_role:
+    name: install_apps/wait_for_pods
+  vars:
     namespace: tigera-operator
-  register: tigera_operator_pod_info
-  until: tigera_operator_pod_info | json_query('resources[*].status.phase') | unique == ["Running"]
-  delay: 10
-  retries: 12
+    delay: 30
+    retries: 12 
 
 - name: Copy manifest
   template:
@@ -35,10 +34,9 @@
     src: "{{ calico_dir }}/custom-resources.yaml"
 
 - name: Wait till the pods are in running phase
-  kubernetes.core.k8s_info:
-    kind: Pod
+  include_role:
+    name: install_apps/wait_for_pods
+  vars:
     namespace: calico-system
-  register: calico_system_pod_info
-  until: calico_system_pod_info | json_query('resources[*].status.phase') | unique == ["Running"]
-  delay: 20
-  retries: 12
+    delay: 30
+    retries: 12 

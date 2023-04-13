@@ -11,13 +11,12 @@
     chart_ref: metallb/metallb
 
 - name: Wait till the pods are in running phase
-  kubernetes.core.k8s_info:
-    kind: Pod
+  include_role:
+    name: install_apps/wait_for_pods
+  vars:
     namespace: metallb-system
-  register: metallb_system_pod_info
-  until: metallb_system_pod_info | json_query('resources[*].status.phase') | unique == ["Running"]
-  delay: 20
-  retries: 12
+    delay: 30
+    retries: 12 
 
 - name: Configure metallb
   kubernetes.core.k8s:

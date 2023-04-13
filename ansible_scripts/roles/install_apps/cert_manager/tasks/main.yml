@@ -13,10 +13,9 @@
       installCRDs: true
 
 - name: Wait till the pods are in running phase
-  kubernetes.core.k8s_info:
-    kind: Pod
+  include_role:
+    name: install_apps/wait_for_pods
+  vars:
     namespace: cert-manager
-  register: cert_manager_pod_info
-  until: cert_manager_pod_info | json_query('resources[*].status.phase') | unique == ["Running"]
-  delay: 20
-  retries: 12
+    delay: 30
+    retries: 12 

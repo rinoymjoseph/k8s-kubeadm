@@ -9,12 +9,11 @@
     release_namespace: ingress-nginx
     create_namespace: true
     chart_ref: ingress-nginx/ingress-nginx
-
+    
 - name: Wait till the pods are in running phase
-  kubernetes.core.k8s_info:
-    kind: Pod
+  include_role:
+    name: install_apps/wait_for_pods
+  vars:
     namespace: ingress-nginx
-  register: ingress_nginx_pod_info
-  until: ingress_nginx_pod_info | json_query('resources[*].status.phase') | unique == ["Running"]
-  delay: 20
-  retries: 12
+    delay: 30
+    retries: 12 

@@ -1,0 +1,8 @@
+- name: Wait till the pods are in running phase
+  kubernetes.core.k8s_info:
+    kind: Pod
+    namespace: "{{ namespace }}"
+  register: pod_info
+  until: pod_info | json_query('resources[*].status.phase') | unique == ["Running"]
+  delay: "{{ delay }}"
+  retries: "{{ retries }}"
