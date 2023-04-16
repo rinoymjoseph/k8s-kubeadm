@@ -1,0 +1,28 @@
+apiVersion: opentelemetry.io/v1alpha1
+kind: OpenTelemetryCollector
+metadata:
+  name: test
+spec:
+  mode: deployment # This configuration is omittable.
+  config: |
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: "0.0.0.0:4317"
+
+    processors:
+
+    exporters:
+      jaeger:
+        endpoint: "simplest-collector.default.svc.cluster.local:14250"
+        tls:
+          insecure: true
+      logging:
+
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: []
+          exporters: [jaeger]

@@ -1,0 +1,19 @@
+- name: Add OpenTelemetry Operator chart repo
+  kubernetes.core.helm_repository:
+    name: open-telemetry
+    repo_url: "https://open-telemetry.github.io/opentelemetry-helm-charts"
+
+- name: Deploy OpenTelemetry Operator
+  kubernetes.core.helm:
+    name: opentelemetry-operator
+    release_namespace: observability
+    create_namespace: true
+    chart_ref: open-telemetry/opentelemetry-operator
+
+- name: Wait till the pods are in running phase
+  include_role:
+    name: install_apps/wait_for_pods
+  vars:
+    namespace: observability
+    delay: 30
+    retries: 12 
