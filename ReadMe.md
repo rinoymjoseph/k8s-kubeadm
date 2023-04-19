@@ -21,6 +21,10 @@ kubectl patch svc my-otel-demo-frontendproxy --type='json' -p \
 kubectl patch svc my-collector-collector --type='json' -p \
 '[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":30080}]'
 
+kubectl patch svc jaeger-demo-query --type='json' -p '[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":30001}]' -n observability
+
+kubectl patch svc otel-demo-collector --type='json' -p '[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":30010}]' -n observability
+
 USER=ability; PASSWORD=welcome123#; echo "${USER}:$(openssl passwd -stdin -apr1 <<< ${PASSWORD})" >> auth
 
 kubectl create secret docker-registry griffinsreg --namespace edgenius \

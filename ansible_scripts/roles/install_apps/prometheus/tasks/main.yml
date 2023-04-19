@@ -6,7 +6,7 @@
 - name: Deploy prometheus
   kubernetes.core.helm:
     name: prometheus
-    release_namespace: monitoring
+    release_namespace: observability
     create_namespace: true
     chart_ref: prometheus-community/kube-prometheus-stack
     values: "{{ lookup('file', 'values.yaml') | from_yaml }}"
@@ -15,6 +15,6 @@
   include_role:
     name: install_apps/wait_for_pods
   vars:
-    namespace: monitoring
+    namespace: observability
     delay: 30
     retries: 12 

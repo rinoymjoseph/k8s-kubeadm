@@ -1,0 +1,36 @@
+- name: Add jaegertracing chart repo
+  kubernetes.core.helm_repository:
+    name: jaegertracing 
+    repo_url: "https://jaegertracing.github.io/helm-charts"
+
+- name: Deploy jaegertracing 
+  kubernetes.core.helm:
+    name: jaeger
+    release_namespace: observability
+    create_namespace: true
+    chart_ref: jaegertracing/jaeger-operator
+    values:
+      jaeger:
+        namespace: default
+
+- name: Wait till the pods are in running phase
+  include_role:
+    name: install_apps/wait_for_pods
+  vars:
+    namespace: observability
+    delay: 30
+    retries: 12
+  
+- name: Create jaeger demo instance
+  kubernetes.core.k8s:
+    namespace: default
+    state: present
+    src: "{{ role_path }}/files/jaeger_demo.yaml"
+
+- name: Wait till the pods are in running phase
+  include_role:
+    name: install_apps/wait_for_pods
+  vars:
+    namespace: observability
+    delay: 30
+    retries: 12

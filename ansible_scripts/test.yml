@@ -1,4 +1,5 @@
 ---
 - hosts: bootstrap
   roles:
-    - role: install_apps/mongodb
+    - role: install_apps/jaeger
+    - role: install_apps/open_telemetry

@@ -1,7 +1,7 @@
 apiVersion: opentelemetry.io/v1alpha1
 kind: OpenTelemetryCollector
 metadata:
-  name: test
+  name: otel-demo
 spec:
   mode: deployment # This configuration is omittable.
   config: |
@@ -15,7 +15,7 @@ spec:
 
     exporters:
       jaeger:
-        endpoint: "simplest-collector.default.svc.cluster.local:14250"
+        endpoint: "jaeger-demo-collector.observability.svc.cluster.local:14250"
         tls:
           insecure: true
       logging:

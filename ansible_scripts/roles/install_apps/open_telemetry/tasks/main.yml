@@ -16,4 +16,18 @@
   vars:
     namespace: observability
     delay: 30
-    retries: 12 
+    retries: 12
+
+- name: Create OpenTelemetryCollector instance
+  kubernetes.core.k8s:
+    namespace: observability
+    state: present
+    src: "{{ role_path }}/files/otel_collector.yaml"
+
+- name: Wait till the pods are in running phase
+  include_role:
+    name: install_apps/wait_for_pods
+  vars:
+    namespace: observability
+    delay: 30
+    retries: 12
