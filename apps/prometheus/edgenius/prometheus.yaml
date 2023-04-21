@@ -19,5 +19,10 @@ spec:
     runAsUser: 1000
   #serviceAccountName: default-prometheus
   version: v2.42.0
-  serviceMonitorNamespaceSelector: {}
+  serviceMonitorNamespaceSelector:
+    matchExpressions:
+      - key: kubernetes.io/metadata.name
+        operator: In
+        values:
+          - edgenius
   serviceMonitorSelector: {}
