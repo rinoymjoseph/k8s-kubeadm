@@ -2,29 +2,25 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: edgenius
-  name: dataapi
+  name: eventapi
   labels:
-    app: dataapi
+    app: eventapi
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: dataapi
+      app: eventapi
   template:
     metadata:
       labels:
-        app: dataapi
+        app: eventapi
     spec:
       containers:
-        - name: dataapi
-          image: griffins.azurecr.io/edge-demo-data-api:1.0.51
+        - name: eventapi
+          image: griffins.azurecr.io/edge-demo-event-api:1.0.8
           env:
             - name: otel_exporter_url
               value: "http://otel-demo-collector.observability.svc.cluster.local:4317"
-            - name: varialbe_api_url
-              value: "http://variableapi.edgenius.svc.cluster.local"
-            - name: event_api_url
-              value: "http://eventapi.edgenius.svc.cluster.local"
             - name: assetdb_api_url
               value: "http://assetdbapi.edgenius.svc.cluster.local"
           ports:
