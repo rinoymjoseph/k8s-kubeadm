@@ -17,7 +17,7 @@ spec:
     fsGroup: 2000
     runAsNonRoot: true
     runAsUser: 1000
-  #serviceAccountName: default-prometheus
+  serviceAccountName: edgenius-prometheus
   version: v2.42.0
   serviceMonitorNamespaceSelector:
     matchExpressions:

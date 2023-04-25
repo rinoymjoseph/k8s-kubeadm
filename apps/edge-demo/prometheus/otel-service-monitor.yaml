@@ -1,14 +1,11 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  labels:
-    app: rpc-app
-    release: prometheus
-  name: rpc-app
+  name: otel-demo-collector-monitoring
   namespace: edgenius
 spec:
   endpoints:
-  - port: web
+  - port: monitoring
   selector:
     matchLabels:
-      app: rpc-app
+      app.kubernetes.io/name: otel-demo-collector-monitoring

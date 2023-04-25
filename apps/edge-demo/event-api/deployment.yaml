@@ -20,7 +20,7 @@ spec:
           image: griffins.azurecr.io/edge-demo-event-api:1.0.8
           env:
             - name: otel_exporter_url
-              value: "http://otel-demo-collector.observability.svc.cluster.local:4317"
+              value: "http://otel-demo-collector.edgenius.svc.cluster.local:4317"
             - name: assetdb_api_url
               value: "http://assetdbapi.edgenius.svc.cluster.local"
           ports:

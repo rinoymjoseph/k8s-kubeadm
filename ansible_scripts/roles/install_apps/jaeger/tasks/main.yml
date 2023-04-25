@@ -11,7 +11,7 @@
     chart_ref: jaegertracing/jaeger-operator
     values:
       jaeger:
-        namespace: default
+        namespace: edgenius
 
 - name: Wait till the pods are in running phase
   include_role:

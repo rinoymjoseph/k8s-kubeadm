@@ -28,6 +28,7 @@
 
 - hosts: bootstrap
   roles:
+    - role: bootstrap/edgenius
     - role: install_apps/wait_for_workers
     - role: install_apps/metal_lb
     - role: install_apps/cert_manager
@@ -37,4 +38,3 @@
     - role: install_apps/longhorn
     - role: install_apps/mongodb
     - role: install_apps/prometheus
-    

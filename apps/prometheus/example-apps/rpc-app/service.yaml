@@ -5,7 +5,7 @@ metadata:
   labels:
     app: rpc-app
     release: prometheus
-  namespace: default
+  namespace: edgenius
 spec:
   ports:
   - name: web
