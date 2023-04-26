@@ -34,3 +34,5 @@
     - role: install_apps/cert_manager
     - role: install_apps/ingress_nginx
     - role: install_apps/prometheus
+    - role: install_apps/jaeger
+    - role: install_apps/open_telemetry

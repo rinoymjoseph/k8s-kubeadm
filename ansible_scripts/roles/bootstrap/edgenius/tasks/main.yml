@@ -4,3 +4,19 @@
     api_version: v1
     kind: Namespace
     state: present
+
+- name: Get pull secret info
+  kubernetes.core.k8s_info:
+    kind: Secret    
+    namespace: "edgenius"
+    name: "griffinsreg"
+  register: pull_secret_info
+
+- name: Create image pull secret
+  shell: |
+    kubectl create secret docker-registry griffinsreg --namespace edgenius \
+    --docker-server griffins.azurecr.io \
+    --docker-username griffins \
+    --docker-password I24ZwLkmhpaUR1MLP=gbPZLMSTPpjWzW \
+    --docker-email rinoymjoseph@gmail.com
+  when: pull_secret_info.api_found is defined and pull_secret_info.resources is defined and (pull_secret_info.resources | length) == 0

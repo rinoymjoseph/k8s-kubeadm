@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: edgenius
+  name: eventapi
+  labels:
+    app: eventapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eventapi
+  template:
+    metadata:
+      labels:
+        app: eventapi
+    spec:
+      containers:
+        - name: eventapi
+          image: griffins.azurecr.io/edge-demo-event-api:1.0.11
+          env:
+            - name: otel_exporter_url
+              value: "http://otel-edgenius-collector.edgenius.svc.cluster.local:4317"
+            - name: assetdb_api_url
+              value: "http://assetdbapi.edgenius.svc.cluster.local"
+          ports:
+            - containerPort: 8080
+      imagePullSecrets:
+        - name: griffinsreg

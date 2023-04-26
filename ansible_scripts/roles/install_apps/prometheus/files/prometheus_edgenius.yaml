@@ -1,0 +1,28 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  labels:
+    app: prometheus-edgenius
+  name: edgenius
+  namespace: edgenius
+spec:
+  image: quay.io/prometheus/prometheus:v2.42.0
+  nodeSelector:
+    kubernetes.io/os: linux
+  replicas: 1
+  resources:
+    requests:
+      memory: 400Mi
+  securityContext:
+    fsGroup: 2000
+    runAsNonRoot: true
+    runAsUser: 1000
+  serviceAccountName: prometheus-edgenius
+  version: v2.42.0
+  serviceMonitorNamespaceSelector:
+    matchExpressions:
+      - key: kubernetes.io/metadata.name
+        operator: In
+        values:
+          - edgenius
+  serviceMonitorSelector: {}

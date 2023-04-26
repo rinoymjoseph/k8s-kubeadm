@@ -6,31 +6,34 @@
 - name: Deploy jaegertracing 
   kubernetes.core.helm:
     name: jaeger
-    release_namespace: observability
+    release_namespace: edgenius
     create_namespace: true
     chart_ref: jaegertracing/jaeger-operator
-    values:
-      jaeger:
-        namespace: edgenius
 
 - name: Wait till the pods are in running phase
   include_role:
     name: install_apps/wait_for_pods
   vars:
-    namespace: observability
+    namespace: edgenius
     delay: 30
     retries: 12
   
-- name: Create jaeger demo instance
+- name: Create jaeger edgenius instance
   kubernetes.core.k8s:
-    namespace: default
+    namespace: edgenius
     state: present
-    src: "{{ role_path }}/files/jaeger_demo.yaml"
+    src: "{{ role_path }}/files/jaeger_edgenius.yaml"
 
 - name: Wait till the pods are in running phase
   include_role:
     name: install_apps/wait_for_pods
   vars:
-    namespace: observability
+    namespace: edgenius
     delay: 30
     retries: 12
+
+- name: Create ingress for jaeger edgenius instance
+  kubernetes.core.k8s:
+    namespace: edgenius
+    state: present
+    src: "{{ role_path }}/files/jaeger_edgenius_ingress.yaml"

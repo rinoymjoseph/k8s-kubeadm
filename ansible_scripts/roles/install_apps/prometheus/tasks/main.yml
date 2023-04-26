@@ -17,4 +17,36 @@
   vars:
     namespace: observability
     delay: 30
-    retries: 12 
+    retries: 12
+
+- name: Create rbac for prometheus instance in edgenius
+  kubernetes.core.k8s:
+    namespace: edgenius
+    state: present
+    src: "{{ role_path }}/files/prometheus_edgenius_rbac.yaml"
+
+- name: Create prometheus instance for edgenius
+  kubernetes.core.k8s:
+    namespace: edgenius
+    state: present
+    src: "{{ role_path }}/files/prometheus_edgenius.yaml"
+
+- name: Wait till the pods are in running phase
+  include_role:
+    name: install_apps/wait_for_pods
+  vars:
+    namespace: edgenius
+    delay: 30
+    retries: 12
+  
+- name: Create service for prometheus instance in edgenius
+  kubernetes.core.k8s:
+    namespace: edgenius
+    state: present
+    src: "{{ role_path }}/files/prometheus_edgenius_service.yaml"
+
+- name: Create ingress for prometheus instance in edgenius
+  kubernetes.core.k8s:
+    namespace: edgenius
+    state: present
+    src: "{{ role_path }}/files/prometheus_edgenius_ingress.yaml"

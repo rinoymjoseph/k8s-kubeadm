@@ -1,5 +1,7 @@
 ---
 - hosts: bootstrap
   roles:
-    - role: install_apps/jaeger
-    - role: install_apps/open_telemetry
+    - role: install_apps/edgenius/assetdb-api
+    - role: install_apps/edgenius/event-api
+    - role: install_apps/edgenius/variable-api
+    - role: install_apps/edgenius/data-api

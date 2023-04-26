@@ -20,14 +20,26 @@
 
 - name: Create OpenTelemetryCollector instance
   kubernetes.core.k8s:
-    namespace: observability
+    namespace: edgenius
     state: present
-    src: "{{ role_path }}/files/otel_collector.yaml"
+    src: "{{ role_path }}/files/otel_edgenius_collector.yaml"
 
 - name: Wait till the pods are in running phase
   include_role:
     name: install_apps/wait_for_pods
   vars:
-    namespace: observability
+    namespace: edgenius
     delay: 30
     retries: 12
+
+- name: Create service for otel prometheus in edgenius
+  kubernetes.core.k8s:
+    namespace: edgenius
+    state: present
+    src: "{{ role_path }}/files/otel_edgenius_metrics_service.yaml"
+
+- name: Create service monitor for otel prometheus in edgenius
+  kubernetes.core.k8s:
+    namespace: edgenius
+    state: present
+    src: "{{ role_path }}/files/otel_edgenius_service_monitor.yaml"

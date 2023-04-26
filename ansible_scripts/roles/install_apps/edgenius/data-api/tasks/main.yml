@@ -1,0 +1,17 @@
+- name: Install data-api
+  kubernetes.core.k8s:
+    namespace: edgenius
+    state: present
+    src: "{{ role_path }}/files/{{ item }}.yaml"
+  with_items:
+    - deployment
+    - service
+    - ingress
+
+- name: Wait till the pods are in running phase
+  include_role:
+    name: install_apps/wait_for_pods
+  vars:
+    namespace: edgenius
+    delay: 30
+    retries: 12

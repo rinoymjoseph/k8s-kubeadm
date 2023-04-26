@@ -23,7 +23,7 @@ kubectl patch svc my-collector-collector --type='json' -p \
 
 kubectl patch svc jaeger-demo-query --type='json' -p '[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":30001}]' -n observability
 
-kubectl patch svc otel-demo-collector --type='json' -p '[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":30010}]' -n edgenius
+kubectl patch svc edgenius-otel-collector --type='json' -p '[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":30010}]' -n edgenius
 
 kubectl patch svc otel-demo-collector-monitoring --type='json' -p '[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":30011}]' -n edgenius
 

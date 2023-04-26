@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: edgenius
+  name: assetdbapi
+  labels:
+    app: assetdbapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: assetdbapi
+  template:
+    metadata:
+      labels:
+        app: assetdbapi
+    spec:
+      containers:
+        - name: assetdbapi
+          image: griffins.azurecr.io/edge-demo-assetdb-api:1.0.9
+          env:
+            - name: otel_exporter_url
+              value: "http://otel-edgenius-collector.edgenius.svc.cluster.local:4317"
+          ports:
+            - containerPort: 8080
+      imagePullSecrets:
+        - name: griffinsreg

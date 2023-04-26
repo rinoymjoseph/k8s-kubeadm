@@ -1,15 +1,15 @@
 apiVersion: opentelemetry.io/v1alpha1
 kind: OpenTelemetryCollector
 metadata:
-  name: otel-demo
+  name: otel-edgenius
   namespace: edgenius
 spec:
   mode: deployment # This configuration is omittable.
+  image: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib:0.75.0
   config: |
     receivers:
       otlp:
         protocols:
-          http:
           grpc:
             endpoint: "0.0.0.0:4317"
 
@@ -17,14 +17,14 @@ spec:
 
     exporters:
       prometheus:
-        endpoint: "0.0.0.0:8089"
+        endpoint: "0.0.0.0:8080"
         namespace: edgenius
         send_timestamps: true
         metric_expiration: 180m
         resource_to_telemetry_conversion:
           enabled: true
       jaeger:
-        endpoint: "jaeger-demo-collector.observability.svc.cluster.local:14250"
+        endpoint: "jaeger-edgenius-collector.edgenius.svc.cluster.local:14250"
         tls:
           insecure: true
       logging:

@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: edgenius
+  name: variableapi
+  labels:
+    app: variableapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: variableapi
+  template:
+    metadata:
+      labels:
+        app: variableapi
+    spec:
+      containers:
+        - name: variableapi
+          image: griffins.azurecr.io/edge-demo-variable-api:1.0.13
+          env:
+            - name: otel_exporter_url
+              value: "http://otel-edgenius-collector.edgenius.svc.cluster.local:4317"
+          ports:
+            - containerPort: 8080
+      imagePullSecrets:
+        - name: griffinsreg

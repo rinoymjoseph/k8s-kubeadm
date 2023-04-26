@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: prometheus-edgenius
+  namespace: edgenius
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /prometheus-edgenius(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: prometheus-edgenius
+            port:
+              number: 9090
