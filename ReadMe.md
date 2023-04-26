@@ -25,7 +25,7 @@ kubectl patch svc jaeger-demo-query --type='json' -p '[{"op":"replace","path":"/
 
 kubectl patch svc edgenius-otel-collector --type='json' -p '[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":30010}]' -n edgenius
 
-kubectl patch svc otel-demo-collector-monitoring --type='json' -p '[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":30011}]' -n edgenius
+kubectl patch svc otel-edgenius-metrics --type='json' -p '[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":30011}]' -n edgenius
 
 USER=ability; PASSWORD=welcome123#; echo "${USER}:$(openssl passwd -stdin -apr1 <<< ${PASSWORD})" >> auth
 
