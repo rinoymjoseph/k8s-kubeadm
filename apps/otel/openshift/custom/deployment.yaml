@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otel-edgenius-collector
+  namespace: edgenius
+  labels:
+    app: otel-edgenius-collector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: otel-edgenius-collector
+  template:
+    metadata:
+      labels:
+        app: otel-edgenius-collector
+    spec:
+      containers:
+        - image: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib:0.76.1
+          name: otel-edgenius-collector
+          args: ["--config=/etc/otel-edgenius-collector-config.yaml"]
+          volumeMounts:
+            - mountPath: /etc/otel-edgenius-collector-config.yaml
+              name: otel-edgenius-collector-config
+              subPath: otel-edgenius-collector-config.yaml
+      volumes:
+        - name: otel-edgenius-collector-config
+          configMap:
+            name: otel-edgenius-collector-config

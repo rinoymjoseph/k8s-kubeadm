@@ -1,0 +1,36 @@
+apiVersion: opentelemetry.io/v1alpha1
+kind: OpenTelemetryCollector
+metadata:
+  name: otel-edgenius
+  namespace: default
+spec:
+  mode: deployment # This configuration is omittable.
+  #image: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib:0.75.0
+  config: |
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: "0.0.0.0:4317"
+
+    processors:
+
+    exporters:
+      prometheus:
+        endpoint: "0.0.0.0:8080"
+        namespace: edgenius
+        send_timestamps: true
+        metric_expiration: 180m
+        resource_to_telemetry_conversion:
+          enabled: true
+      logging:
+
+    service:
+      pipelines:
+        metrics:
+          receivers: [otlp]
+          processors: []
+          exporters: [prometheus]
+      telemetry:
+        logs:
+          level: "debug"

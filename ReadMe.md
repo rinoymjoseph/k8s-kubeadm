@@ -27,6 +27,17 @@ kubectl patch svc edgenius-otel-collector --type='json' -p '[{"op":"replace","pa
 
 kubectl patch svc otel-edgenius-metrics --type='json' -p '[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":30011}]' -n edgenius
 
+kubectl patch svc otel-edgenius-collector-monitoring --type='json' -p '[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":30012}]' -n edgenius
+
+oc patch svc otel-edgenius-metrics --type='json' -p '[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":30011}]' -n edgenius
+
+oc patch svc otel-edgenius-collector-monitoring --type='json' -p '[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":30012}]' -n edgenius
+
+
+http://192.168.0.161:30012/metrics
+http://192.168.0.161:30011/metrics
+
+
 USER=ability; PASSWORD=welcome123#; echo "${USER}:$(openssl passwd -stdin -apr1 <<< ${PASSWORD})" >> auth
 
 kubectl create secret docker-registry griffinsreg --namespace edgenius \

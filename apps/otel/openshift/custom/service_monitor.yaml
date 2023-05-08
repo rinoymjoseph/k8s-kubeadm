@@ -1,0 +1,11 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: otel-edgenius-collector-monitoring
+  namespace: edgenius
+spec:
+  endpoints:
+  - port: prometheus
+  selector:
+    matchLabels:
+      app: otel-edgenius-collector

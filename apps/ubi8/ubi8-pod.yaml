@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ubi8
+  namespace: edgenius
+  labels:
+    app: ubi8
+spec:
+  containers:
+  - name: ubi8
+    image: registry.access.redhat.com/ubi8/ubi:latest
+    command: ["/bin/sleep", "3650d"]
+    imagePullPolicy: IfNotPresent
+  restartPolicy: Always

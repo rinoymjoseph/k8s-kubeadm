@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: otel-edgenius-collector
+  namespace: edgenius
+  labels:
+    app: otel-edgenius-collector
+spec:
+  type: ClusterIP
+  selector:
+    app: otel-edgenius-collector
+  ports:
+    - name: otel-edgenius-collector
+      port: 4317
+    - name: prometheus
+      port: 8080

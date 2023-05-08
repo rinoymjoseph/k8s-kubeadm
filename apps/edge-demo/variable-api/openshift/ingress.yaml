@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: variableapi
+  namespace: edgenius
+  annotations:
+    haproxy.router.openshift.io/rewrite-target: /
+spec:
+  rules:
+  - host: router-default.apps.onlinesno1.cod.abb.com 
+    http:
+      paths:
+      - backend:
+          service:
+            name: variableapi
+            port:
+              number: 80
+        path: /variableapi
+        pathType: Prefix
+  tls:
+  - hosts:
+    - router-default.apps.onlinesno1.cod.abb.com 
+    secretName: edgenius-ingress-tls-secret

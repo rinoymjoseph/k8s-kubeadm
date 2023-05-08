@@ -17,10 +17,10 @@ spec:
     spec:
       containers:
         - name: variableapi
-          image: griffins.azurecr.io/edge-demo-variable-api:1.0.10
+          image: griffins.azurecr.io/edge-demo-variable-api:1.0.13
           env:
             - name: otel_exporter_url
-              value: "http://otel-demo-collector.edgenius.svc.cluster.local:4317"
+              value: "http://otel-edgenius-collector.edgenius.svc.cluster.local:4317"
           ports:
             - containerPort: 8080
       imagePullSecrets:
